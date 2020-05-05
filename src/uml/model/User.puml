@@ -1,0 +1,10 @@
+@startuml
+
+entity User {
++ id: Long [PK]
+--
+passowrd: String
+}
+
+
+@enduml
