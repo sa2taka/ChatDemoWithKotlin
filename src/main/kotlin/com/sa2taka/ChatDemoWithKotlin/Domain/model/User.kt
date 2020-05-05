@@ -1,5 +1,7 @@
 package com.sa2taka.ChatDemoWithKotlin.Domain.model
 
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import java.io.Serializable
 import javax.persistence.*
 import javax.validation.constraints.NotNull
@@ -15,4 +17,8 @@ class User : Serializable {
   @NotNull
   @Column (name = "password", nullable = false)
   var password: String = ""
+    set(value) {
+      val encoder = BCryptPasswordEncoder()
+      field = encoder.encode(value)
+    }
 }

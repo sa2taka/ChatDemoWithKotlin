@@ -32,3 +32,4 @@ out/
 .vscode/
 
 h2db
+src/main/resources/static/js/

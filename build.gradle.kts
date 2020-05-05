@@ -1,16 +1,17 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.run.BootRun
-import org.gradle.plugins.ide.idea.model.Module
 
 
 plugins {
 	id("org.springframework.boot") version "2.2.6.RELEASE"
 	id("io.spring.dependency-management") version "1.0.9.RELEASE"
+	id("org.siouan.frontend") version "2.0.0"
 	war
 	kotlin("jvm") version "1.3.71"
 	kotlin("plugin.spring") version "1.3.71"
 	kotlin("plugin.jpa") version "1.3.71"
 	idea
+
 }
 
 group = "com.example"
@@ -30,7 +31,9 @@ repositories {
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.springframework.boot:spring-boot-starter-data-rest")
 	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -69,4 +72,23 @@ tasks.withType<BootRun> {
 		"spring.h2.console.enable" to true,
 		"spring.h2.console.path" to "/h2-console"
 	)
+}
+
+frontend {
+	nodeDistributionProvided.set(false)
+	nodeVersion.set("10.20.1")
+	nodeDistributionUrl.set("https://nodejs.org/dist/v10.20.1/node-v10.20.1-darwin-x64.tar.gz")
+	nodeInstallDirectory.set(project.layout.projectDirectory.dir("node"))
+
+	yarnEnabled.set(true)
+	yarnDistributionProvided.set(false)
+	yarnVersion.set("1.22.4")
+	yarnDistributionUrl.set("https://github.com/yarnpkg/yarn/releases/download/v1.22.4/yarn-v1.22.4.tar.gz")
+	yarnInstallDirectory.set(project.layout.projectDirectory.dir("yarn"))
+
+	installScript.set("install")
+	cleanScript.set("run clean")
+	assembleScript.set("run assemble")
+	checkScript.set("run check")
+	publishScript.set("run publish")
 }
