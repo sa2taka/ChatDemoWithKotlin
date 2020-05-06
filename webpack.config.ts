@@ -4,20 +4,31 @@ import { Configuration, Options } from 'webpack';
 
 const targets = glob.sync(`${__dirname}/src/main/js/pages/*.tsx`);
 const entries: Record<string, string> = {};
+
+// buildPathの2つに向けてpages内のファイルのビルドを行っている
+// buildPathに送ることでHotReloadができる
+// srcPathに送ることでgradleでのビルド時に自動的にビルドされる
+// NODE_ENVでわけてもいいかもしれないが、ひとまずこういう設計
 targets.forEach((value) => {
   const re = new RegExp(`${__dirname}/src/main/js/pages`);
   const key = value.replace(re, '').replace(/\.tsx$/, '');
-  entries[key] = value;
+  const srcPath = 'src/main/resources/static/js';
+  const buildPath = 'build/resources/main/static/js';
+  entries[srcPath + key] = value;
+  entries[buildPath + key] = value;
 });
+
+const env =
+  process.env.NODE_ENV === 'production' ? 'production' : 'development';
 
 const config: Configuration = {
   context: path.join(__dirname, 'src'),
   entry: entries,
-  devtool: 'source-map' as Options.Devtool,
+  devtool: env === 'production' ? false : ('source-map' as Options.Devtool),
   cache: true,
-  mode: 'development',
+  mode: env,
   output: {
-    path: path.join(__dirname, 'src/main/resources/static/js/'),
+    path: __dirname,
     filename: '[name].js',
   },
   module: {
