@@ -1,11 +1,17 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
+import Header from '../layout/header';
+import 'mini.css';
 
 export interface IIndexProps {}
 
 function Index(props: IIndexProps) {
-  const a = 1 + 1;
-  return <div>Hello, World</div>;
+  return (
+    <>
+      <Header />
+      <div>hello, world</div>
+    </>
+  );
 }
 
 const react = document.getElementById('react');

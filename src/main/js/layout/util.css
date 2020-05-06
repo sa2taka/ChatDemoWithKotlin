@@ -1,0 +1,7 @@
+.row.center {
+  justify-content: center;
+}
+
+.spacer {
+  flex: 1;
+}

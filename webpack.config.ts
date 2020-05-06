@@ -1,15 +1,17 @@
 import * as path from 'path';
 import glob from 'glob';
 import { Configuration, Options } from 'webpack';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
-const targets = glob.sync(`${__dirname}/src/main/js/pages/*.tsx`);
+const tsTargets = glob.sync(`${__dirname}/src/main/js/pages/*.tsx`);
+const sccTargets = glob.sync(`${__dirname}/src/main/js/**/*.css`);
 const entries: Record<string, string> = {};
 
 // buildPathの2つに向けてpages内のファイルのビルドを行っている
 // buildPathに送ることでHotReloadができる
 // srcPathに送ることでgradleでのビルド時に自動的にビルドされる
 // NODE_ENVでわけてもいいかもしれないが、ひとまずこういう設計
-targets.forEach((value) => {
+tsTargets.forEach((value) => {
   const re = new RegExp(`${__dirname}/src/main/js/pages`);
   const key = value.replace(re, '').replace(/\.tsx$/, '');
   const srcPath = 'src/main/resources/static/js';
@@ -37,6 +39,10 @@ const config: Configuration = {
         test: /\.tsx?$/,
         exclude: /node_modules/,
         use: [{ loader: 'ts-loader' }],
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },

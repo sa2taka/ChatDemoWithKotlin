@@ -11,4 +11,14 @@ class HomeController {
   fun index(): String {
     return "index";
   }
+
+  @RequestMapping(path = ["/register"], method = [RequestMethod.GET])
+  fun register(): String {
+    return "register"
+  }
+
+  @RequestMapping(path = ["/login"], method = [RequestMethod.GET])
+  fun login(): String {
+    return "login"
+  }
 }
